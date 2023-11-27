@@ -121,7 +121,9 @@ All HAL function prototypes and datatype definitions are available in ccsp_hal_e
 
 Covered as per "Description" sections in the API documentation.
 
-#### Sequence Diagram
+### UML Diagrams
+
+## Sequence Diagram
 
 ```mermaid
 sequenceDiagram

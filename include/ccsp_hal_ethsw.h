@@ -19,8 +19,8 @@
 
 /**
  * 
- * @file platform_hal.h
- * @brief The platform_hal provides an interface to get/set Ethernet Switch control features.
+ * @file ccsp_hal_ethsw.h
+ * @brief The ccsp_hal_ethsw provides an interface to get/set Ethernet Switch control features.
  */
 
 
@@ -284,7 +284,6 @@ CCSP_HAL_ETH_STATS, *PCCSP_HAL_ETH_STATS;
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -298,7 +297,6 @@ CcspHalEthSwInit
     );
 
 
-/* CcspHalEthSwGetPortStatus :  */
 /**
 * @brief Retrieve the current port status - link speed, duplex mode etc.
 
@@ -317,7 +315,6 @@ CcspHalEthSwInit
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -349,7 +346,6 @@ CcspHalEthSwGetPortStatus
 * @retval RETURN_OK if the operation is successful.
 * @retval RETURN_ERR if any error is detected during the operation.
 *
-* @sideeffect None.
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
@@ -383,7 +379,6 @@ CcspHalEthSwGetPortCfg
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -415,7 +410,6 @@ CcspHalEthSwSetPortCfg
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -441,7 +435,6 @@ CcspHalEthSwGetPortAdminStatus
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -468,7 +461,6 @@ CcspHalEthSwSetPortAdminStatus
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -495,7 +487,6 @@ CcspHalEthSwSetAgingSpeed
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -522,14 +513,20 @@ CcspHalEthSwLocatePortByMacAddress
  * @{
  */
 
+/**
+ * @brief Structure to hold the device details.
+ * @note Ensure that any value specified does not exceed the buffer size
+ * limit defined.
+ */
+
 typedef struct _eth_device {
     UCHAR eth_devMacAddress[6]; /**< It is a 6 bytes unsigned character array that represents the MAC Address.
                                      The format of the MAC address is given as an example: "00:1A:2B:11:B2:33". */
     INT  eth_port;              /**< Which external port the device attached to. It is an integer value.
-*                                    The valid range of eth_Port is from 0 to MaxEthPort-1, where MaxEthPort is platform specific.
-*                                    It is a vendor specific value. */
+                                     The valid range of eth_Port is from 0 to MaxEthPort-1, where MaxEthPort is platform specific.
+                                     It is a vendor specific value. */
     INT  eth_vlanid;            /**< It is an integer value which represents what vlan ID the port is tagged.
-*                                    The valid VLAN IDs range from 1 to 4094.It is a vendor specific value. */
+                                     The valid VLAN IDs range from 1 to 4094.It is a vendor specific value. */
     INT  eth_devTxRate;         /**< Tx Speed. It is an unsigned integer value. It is a vendor specific value. */
     INT  eth_devRxRate;         /**< Rx Speed. IT is an unsigned integer value. It is a vendor specific value. */
     BOOLEAN eth_Active;         /**< It is a boolean value which represents whether the device is online/offline. 
@@ -558,7 +555,6 @@ typedef struct _eth_device {
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -577,7 +573,6 @@ INT CcspHalExtSw_getAssociatedDevice(ULONG *output_array_size, eth_device_t **ou
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -593,13 +588,8 @@ typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev
 *            \n The parameters are defined below:
 *            \n eth_dev - Output parameter which is a pointer to an array of structures of type eth_device_t.
 *
-* @return The status of the operation.
-* @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected or MAC address is not found.
-*
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -625,7 +615,6 @@ void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociat
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -650,7 +639,6 @@ int CcspHalExtSw_ethPortConfigure(char *ifname, BOOLEAN WanMode);
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None
 */
 INT
 CcspHalExtSw_getEthWanEnable
@@ -669,7 +657,6 @@ CcspHalExtSw_getEthWanEnable
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None
 */
 INT
 CcspHalExtSw_setEthWanEnable
@@ -687,7 +674,6 @@ CcspHalExtSw_setEthWanEnable
 * @retval TRUE if WAN is enabled.
 * @retval FALSE IF LAN is enabled.
 *
-* @sideeffect None
 */
 BOOLEAN CcspHalExtSw_getCurrentWanHWConf();
 #endif
@@ -705,7 +691,6 @@ BOOLEAN CcspHalExtSw_getCurrentWanHWConf();
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None
 */
 INT
 CcspHalExtSw_getEthWanPort
@@ -724,7 +709,6 @@ CcspHalExtSw_getEthWanPort
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None
 */
 INT
 CcspHalExtSw_setEthWanPort
@@ -733,7 +717,7 @@ CcspHalExtSw_setEthWanPort
   );
 
 /**
-* brief: Retrieve the current port's statistics.
+* @brief Retrieve the current port's statistics.
 
 * @param[in] PortId Port ID as defined in CCSP_HAL_ETHSW_PORT enumeration.
 *                   \n Port ID value ranges from 1 to 20.
@@ -746,7 +730,6 @@ CcspHalExtSw_setEthWanPort
 *
 * @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -769,7 +752,7 @@ CcspHalEthSwGetEthPortStats
  * @{
  */
 
-/*
+/**
 * @brief Define callback function pointers which needs to be called
 * from provisioning abstraction layer when any provisioning
 * event occurs.
@@ -777,8 +760,8 @@ CcspHalEthSwGetEthPortStats
 typedef void ( *fpEthWanLink_Up ) ( ) ;    /**< RDKB expects this callback once EthWan link is UP */
 typedef void ( *fpEthWanLink_Down ) ( ) ;  /**< RDKB expects this callback once EthWan link is Down */
 
-/*! \var typedef struct __appCallBack
-*       \brief struct of pointers to the function pointers of callback functions.
+/**
+*   @brief struct of pointers to the function pointers of callback functions.
 */
 
 typedef struct __appCallBack
@@ -801,11 +784,6 @@ typedef struct __appCallBack
 *
 * @param[in] obj struct of pointers to the function pointers as defined in appCallBack structure.
 *
-* @return The status of the operation.
-* @retval RETURN_OK if successful.
-* @retval RETURN_ERR if any error is detected.
-*
-* @sideeffect None
 */
 void GWP_RegisterEthWan_Callback(appCallBack *obj);
 
@@ -818,7 +796,6 @@ void GWP_RegisterEthWan_Callback(appCallBack *obj);
 * @retval 0 if inactive(Link Down).
 * @retval Less than 0 if failure, errno.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
@@ -839,7 +816,6 @@ INT GWP_GetEthWanLinkStatus();
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @sideeffect None.
 
 *
 * @note This function must not suspend and must not invoke any blocking system
