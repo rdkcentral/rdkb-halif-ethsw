@@ -108,7 +108,12 @@ Any new API introduced should be implemented by all the 3rd party module and RDK
 
 ## Platform or Product Customization
 
-None
+The product can be configured via the following compile time defines:
+
+```c
+FEATURE_RDKB_WAN_MANAGER        # Enable the WAN Manager
+FEATURE_RDKB_AUTO_PORT_SWITCH    # Enable the RDKB Auto Port Switch
+```
 
 ## Interface API Documentation
 
