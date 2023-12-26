@@ -20,14 +20,16 @@
 # *
 
 # In the future this should moved to a fixed verison
-HAL_GENERATOR_VERSION=develop
+HAL_GENERATOR_VERSION=1.2.0
 
 # This will look up the last tag in the git repo, depending on the project this may require modification
 PROJECT_VERSION=$(git describe --tags | head -n1)
+DOXYGEN_EXTRA_PARAMS="PREDEFINED='FEATURE_RDKB_WAN_MANAGER=1 FEATURE_RDKB_AUTO_PORT_SWITCH=1'"
 
 # Check if the common document configuration is present, if not clone it
 if [ -d "./build" ]; then
-    make -C ./build PROJECT_NAME="RDK-B EthSW HAL" PROJECT_VERSION=${PROJECT_VERSION}
+    make -C ./build PROJECT_NAME="RDK-B EthSW HAL" PROJECT_VERSION=${PROJECT_VERSION} DOXYGEN_EXTRA_PARAMS="${DOXYGEN_EXTRA_PARAMS}"
+
 else
     echo "Cloning Common documentation generation"
     git clone git@github.com:rdkcentral/hal-doxygen.git build

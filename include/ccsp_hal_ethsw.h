@@ -276,6 +276,14 @@ CCSP_HAL_ETH_STATS, *PCCSP_HAL_ETH_STATS;
  *
 **********************************************************************************/
 
+/*
+ * TODO:
+ *
+ * 1. Extend the return codes by listing out the possible reasons of failure, to improve the interface in the future.
+ *    This was reported during the review for header file migration to opensource github.
+ *
+ */
+
 /**
 * @brief Do what needed to intialize the Eth hal.
 *
@@ -286,8 +294,6 @@ CCSP_HAL_ETH_STATS, *PCCSP_HAL_ETH_STATS;
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -313,12 +319,9 @@ CcspHalEthSwInit
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -347,12 +350,9 @@ CcspHalEthSwGetPortStatus
 * @retval RETURN_ERR if any error is detected during the operation.
 *
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -381,8 +381,6 @@ CcspHalEthSwGetPortCfg
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -408,12 +406,9 @@ CcspHalEthSwSetPortCfg
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -437,8 +432,6 @@ CcspHalEthSwGetPortAdminStatus
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -463,8 +456,6 @@ CcspHalEthSwSetPortAdminStatus
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -485,12 +476,9 @@ CcspHalEthSwSetAgingSpeed
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected or MAC address is not found.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -520,7 +508,7 @@ CcspHalEthSwLocatePortByMacAddress
  */
 
 typedef struct _eth_device {
-    UCHAR eth_devMacAddress[6]; /**< It is a 6 bytes unsigned character array that represents the MAC Address.
+    UCHAR eth_devMacAddress[6]; /**< It is an unsigned character array that represents the MAC Address.
                                      The format of the MAC address is given as an example: "00:1A:2B:11:B2:33". */
     INT  eth_port;              /**< Which external port the device attached to. It is an integer value.
                                      The valid range of eth_Port is from 0 to MaxEthPort-1, where MaxEthPort is platform specific.
@@ -529,8 +517,7 @@ typedef struct _eth_device {
                                      The valid VLAN IDs range from 1 to 4094.It is a vendor specific value. */
     INT  eth_devTxRate;         /**< Tx Speed. It is an unsigned integer value. It is a vendor specific value. */
     INT  eth_devRxRate;         /**< Rx Speed. IT is an unsigned integer value. It is a vendor specific value. */
-    BOOLEAN eth_Active;         /**< It is a boolean value which represents whether the device is online/offline. 
-                                     Possible values: TRUE or FALSE. */
+    BOOLEAN eth_Active;         /**< It is a boolean value which represents whether the device is online/offline. */
 } eth_device_t;
 /**
  * @}
@@ -553,12 +540,9 @@ typedef struct _eth_device {
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected or MAC address is not found.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT CcspHalExtSw_getAssociatedDevice(ULONG *output_array_size, eth_device_t **output_struct);
@@ -571,12 +555,9 @@ INT CcspHalExtSw_getAssociatedDevice(ULONG *output_array_size, eth_device_t **ou
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected or MAC address is not found.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev);
@@ -588,12 +569,9 @@ typedef INT ( * CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev
 *            \n The parameters are defined below:
 *            \n eth_dev - Output parameter which is a pointer to an array of structures of type eth_device_t.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociatedDevice_callback callback_proc); //!< Callback registration function.
@@ -607,18 +585,15 @@ void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociat
 * @param[in] ifname A pointer to the character array that will hold the interface name.
 *                   \n The possible values are: eth0, eth1, eth2, eth3.
 *                   \n The buffer size should be atleast 32 bytes.
-* @param[in] WanMode Boolean value to hold the EthernetWAN enable status. The possible values are: True, False.
+* @param[in] WanMode Boolean value to hold the EthernetWAN enable status.
 *
 * @return The status of the operation.
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected or MAC address is not found.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 int CcspHalExtSw_ethPortConfigure(char *ifname, BOOLEAN WanMode);
@@ -637,7 +612,6 @@ int CcspHalExtSw_ethPortConfigure(char *ifname, BOOLEAN WanMode);
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 */
 INT
@@ -689,7 +663,6 @@ BOOLEAN CcspHalExtSw_getCurrentWanHWConf();
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 */
 INT
@@ -728,12 +701,9 @@ CcspHalExtSw_setEthWanPort
 * @retval RETURN_OK if successful.
 * @retval RETURN_ERR if any error is detected.
 *
-* @remark The caller is responsible for providing a valid memory location for the function arguments.
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
@@ -798,8 +768,6 @@ void GWP_RegisterEthWan_Callback(appCallBack *obj);
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT GWP_GetEthWanLinkStatus();
@@ -818,8 +786,6 @@ INT GWP_GetEthWanLinkStatus();
 *
 
 *
-* @note This function must not suspend and must not invoke any blocking system
-* calls. It should probably just send a message to a driver event handler task.
 *
 */
 INT
