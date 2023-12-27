@@ -100,11 +100,11 @@ There should not be any memory leaks/corruption introduced by HAL and underneath
 
 ## Licensing
 
-EthSW HAL implementation is expected to released under the Apache License. 
+EthSW HAL implementation is expected to released under the Apache License 2.0. 
 
 ## Build Requirements
 
-EthSW HAL source code should be able to be built under Linux Yocto environment and should be delivered as a shared library libhal_ethsw.la
+EthSW HAL source code should be able to be built under Linux Yocto environment and should be delivered as a shared library `libhal_ethsw.la`
   
 ## Variability Management
 
@@ -123,10 +123,10 @@ FEATURE_RDKB_AUTO_PORT_SWITCH    # Enable the RDKB Auto Port Switch
 
 ## Interface API Documentation
 
-All HAL function prototypes and datatype definitions are available in ccsp_hal_ethsw.h file.
+All HAL function prototypes and datatype definitions are available in `ccsp_hal_ethsw.h` file.
     
-     1. Components/Process must include ccsp_hal_ethsw.h to make use of ethsw hal capabilities.
-     2. Components/Process should add linker dependency for libhal_ethsw.
+1.   Components/Process must include `ccsp_hal_ethsw.h` to make use of ethsw hal capabilities.
+2.   Components/Process should add linker dependency for `libhal_ethsw`.
 
 ## Theory of operation and key concepts
 
