@@ -2,10 +2,28 @@
 
 ## Acronyms
 
+The following table lists acronyms identified within the xxx.md and xxx.h files. These acronyms were extracted by carefully reviewing the documents for abbreviations and their corresponding definitions. Note that this list may not be exhaustive, as some acronyms might be used contextually without explicit definition.
+
 - `HAL` \- Hardware Abstraction Layer
-- `RDK-B` \- Reference Design Kit for Broadband Devices
-- `OEM` \- Original Equipment Manufacture
-- `EthSW` \- Ethernet Switch
+- `RDK-B` \- Reference Design Kit Broadband
+- `ETHSW` \- Ethernet Switch
+- `WAN` \- Wide Area Network
+- `LAN` \- Local Area Network
+- `VLAN` \- Virtual Local Area Network
+- `IP` \- Internet Protocol
+- `DHCP` \- Dynamic Host Configuration Protocol
+- `MAC` \- Media Access Control
+- `QoS` \- Quality of Service
+- `DSCP` \- Differentiated Services Code Point
+- `ACL` \- Access Control List
+- `IGMP` \- Internet Group Management Protocol
+- `MLD` \- Multicast Listener Discovery
+- `STP` \- Spanning Tree Protocol
+- `MIB` \- Management Information Base
+- `CLI` \- Command Line Interface
+- `JSON` \- JavaScript Object Notation
+- `TR-181` \- Technical Report 181 (CPE WAN Mgmt Protocol)
+- `OMCI` \- Optical Network Terminal Management Interface
 
 ## Description
 
@@ -13,26 +31,45 @@ The diagram below describes a high-level software architecture of the EthSW HAL 
 
 ![EthSW HAL Architecture Diag](images/EthSW_HAL_Architecture.png)
 
-EthSW HAL is an abstraction layer, implemented to interact with vendor software's for getting the hardware specific details such as ethernet swtich port , data link rate , link mode and link status .
-This HAL layer is intended to be a common HAL,should be usable by any Ccspcomponents or Processes.
+The Ethernet Switch Hardware Abstraction Layer (HAL) module, also known as ccsp_hal_ethsw, provides a standardized interface for managing and configuring Ethernet switches in the Reference Design Kit Broadband (RDK-B) ecosystem. It serves as a bridge between the RDK-B software stack and the underlying Ethernet switch hardware, enabling consistent configuration and control across various switch implementations.
+
+Key Functions:
+
+Port Management: Control of Ethernet port states (enable/disable), speed, and duplex settings.
+VLAN Configuration: Creation, deletion, and modification of Virtual LANs (VLANs) to segment network traffic.
+QoS (Quality of Service): Implementation and management of QoS policies to prioritize different types of network traffic.
+Security: Configuration of access control lists (ACLs) to filter traffic and enhance network security.
+Multicast Control: Management of IGMP (Internet Group Management Protocol) and MLD (Multicast Listener Discovery) to enable multicast functionality.
+Diagnostics: Retrieval of Ethernet switch statistics and information for troubleshooting purposes.
+Benefits:
+
+Abstraction: Simplifies the interaction with Ethernet switches by providing a consistent API regardless of the underlying hardware.
+Modularity: Allows for easy integration of new Ethernet switch hardware into the RDK-B platform.
+Flexibility: Supports a wide range of Ethernet switch features and configurations.
+Reliability: Ensures stable and predictable Ethernet switch behavior across different RDK-B devices.
+Standardization: Promotes interoperability between different RDK-B components and applications.
+TR-181 Data Model: Aligns with the TR-181 data model, a widely used standard for CPE (Customer Premises Equipment) management.
+
+This module is essential for RDK-B devices that incorporate Ethernet switches, such as home gateways and routers. It enables software developers to easily manage and control Ethernet switch functionality without needing to understand the specifics of the underlying hardware.
 
 ## Component Runtime Execution Requirements
 
 ### Initialization and Startup
 
-Below Initialization API's provide opportunity for the HAL code to initialize the appropriate DB's,start threads etc. 
+The EthSW HAL (Ethernet Switch Hardware Abstraction Layer) client module should call the following initialization API once during bootup, before invoking any other dependent APIs.
 
-EthSW HAL client module is expected to call the corresponding API Once during bootup before invoking Dependent API's.
+- `CcspHalEthSwInit()`: This function initializes the EthSW HAL, setting up necessary data structures, starting threads, and ensuring the underlying hardware is ready for operation.
+Important Note:
 
-- `CcspHalEthSwInit()`
-
-3rd party vendors will implement appropriately to meet operational requirements. This interface is expected to block if the hardware is not ready.
+- Mandatory Initialization: The `CcspHalEthSwInit()` function must be called before using any other EthSW HAL API.
+- `Blocking Behavior`: This function may block execution if the underlying Ethernet switch hardware is not ready. This ensures a robust initialization process and prevents errors due to premature interaction with the hardware.
+- `Vendor Implementation`: Third-party vendors should implement this API according to their specific operational requirements, taking into account the potential blocking behavior.
 
 ## Threading Model
 
 EthSW HAL is not thread safe, any module which is invoking the EthSW HAL api should ensure calls are made in a thread safe manner.
 
-Vendors can create internal threads/events to meet their operation requirements. These should be responsible to synchronize between the calls, events and cleaned up on closure.
+Vendors may implement internal threading and event mechanisms to meet their operational requirements. These mechanisms must be designed to ensure thread safety when interacting with HAL interface. Proper cleanup of allocated resources (e.g., memory, file handles, threads) is mandatory when the vendor software terminates or closes its connection to the HAL.
 
 ## Process Model
 
@@ -40,8 +77,13 @@ All API's are expected to be called from multiple process.
 
 ## Memory Model
 
-EthSW HAL client module is responsible to allocate and deallocate memory for necessary API's as specified in API Documentation.
-Different 3rd party vendors allowed to allocate memory for internal operational requirements. In this case 3rd party implementations should be responsible to deallocate internally.
+Caller Responsibilities:
+
+Manage memory passed to specific functions as outlined in the API documentation. This includes allocation and deallocation to prevent leaks.
+Module Responsibilities:
+
+Handle and deallocate memory used for its internal operations.
+Release all internally allocated memory upon closure to prevent leaks.
 
 TODO:
 State a footprint requirement. Example: This should not exceed XXXX KB.
@@ -57,20 +99,29 @@ There are no asynchronous notifications.
 
 ## Blocking calls
 
-EthSW HAL API's are expected to work synchronously and should complete within a time period commensurate with the complexity of the operation and in accordance with any relevant specification. 
-Any calls that can fail due to the lack of a response should have a timeout period in accordance with any relevant documentation.
-The upper layers will call this API from a single thread context, this API should not suspend.
+Synchronous and Responsive: All APIs within this module should operate synchronously and complete within a reasonable timeframe based on the complexity of the operation. Specific timeout values or guidelines may be documented for individual API calls.
+
+Timeout Handling: To ensure resilience in cases of unresponsiveness, implement appropriate timeouts for API calls where failure due to lack of response is a possibility. Refer to the API documentation for recommended timeout values per function.
+
+Non-Blocking Requirement: Given the single-threaded environment in which these APIs will be called, it is imperative that they do not block or suspend execution of the main thread. Implementations must avoid long-running operations or utilize asynchronous mechanisms where necessary to maintain responsiveness.
 
 TODO:
-As we state that they should complete within a time period, we need to state what that time target is, and pull it from the spec if required. Define the timeout requirement.
+- Define API Timeout Requirements:
+   - For each EthSW HAL API, specify an appropriate timeout value based on the expected operation time and potential 
+    failure scenarios.
+   - Consider factors like network latency, hardware response times, and the complexity of the operation.
+   - If applicable, reference relevant specifications or industry standards for guidance on timeout durations.
+   - Document the default timeout values for each API clearly within the header file or accompanying documentation.
 
 ## Internal Error Handling
 
-All the EthSW HAL API's should return error synchronously as a return argument. HAL is responsible to handle system errors(e.g. out of memory) internally.
+Synchronous Error Handling: All APIs must return errors synchronously as a return value. This ensures immediate notification of errors to the caller.
+Internal Error Reporting: The HAL is responsible for reporting any internal system errors (e.g., out-of-memory conditions) through the return value.
+Focus on Logging for Errors: For system errors, the HAL should prioritize logging the error details for further investigation and resolution.
 
 ## Persistence Model
 
-There is no requirement for HAL to persist any setting information. Application/Client is responsible to persist any settings related to their implementation.
+There is no requirement for HAL to persist any setting information. 
 
 # Nonfunctional requirements
 
@@ -88,27 +139,25 @@ Logging should be defined with log levels as per Linux standard logging.
 
 ## Memory and performance requirements
 
-Make sure EthSW HAL is not contributing more to memory and CPU utilization while performing normal operations and Commensurate with the operation required.
-
+The component should be designed for efficiency, minimizing its impact on system resources during normal operation. Resource utilization (e.g., CPU, memory) should be proportional to the specific task being performed and align with any performance expectations documented in the API specifications.
 
 ## Quality Control
 
-EthSW HAL implementation should pass checks using any third party tools like `Coverity`, `Black duck`, `Valgrind` etc. without any issue to ensure quality.
+To ensure the highest quality and reliability, it is strongly recommended that third-party quality assurance tools like Coverity, Black Duck, and Valgrind be employed to thoroughly analyze the implementation. The goal is to detect and resolve potential issues such as memory leaks, memory corruption, or other defects before deployment.
 
-There should not be any memory leaks/corruption introduced by HAL and underneath 3rd party software implementation.
-
+Furthermore, both the HAL wrapper and any third-party software interacting with it must prioritize robust memory management practices. This includes meticulous allocation, deallocation, and error handling to guarantee a stable and leak-free operation.
 
 ## Licensing
 
-EthSW HAL implementation is expected to released under the Apache License 2.0. 
+The implementation is expected to released under the Apache License 2.0.
 
 ## Build Requirements
 
-EthSW HAL source code should be able to be built under Linux Yocto environment and should be delivered as a shared library `libhal_ethsw.la`
+EthSW HAL source code should be able to be built under Linux Yocto environment and should be delivered as a shared library `libhal_ethsw.so`
   
 ## Variability Management
 
-Changes to the interface will be controlled by versioning, vendors will be expected to implement to a fixed version of the interface, and based on SLA agreements move to later versions as demand requires.
+The role of adjusting the interface, guided by versioning, rests solely within architecture requirements. Thereafter, vendors are obliged to align their implementation with a designated version of the interface. As per Service Level Agreement (SLA) terms, they may transition to newer versions based on demand needs.
 
 Each API interface will be versioned using [Semantic Versioning 2.0.0](https://semver.org/), the vendor code will comply with a specific version of the interface.
 
@@ -126,11 +175,43 @@ FEATURE_RDKB_AUTO_PORT_SWITCH    # Enable the RDKB Auto Port Switch
 All HAL function prototypes and datatype definitions are available in `ccsp_hal_ethsw.h` file.
     
 1.   Components/Process must include `ccsp_hal_ethsw.h` to make use of ethsw hal capabilities.
-2.   Components/Process should add linker dependency for `libhal_ethsw`.
+2.   Components/Process should add linker dependency for `libhal_ethsw.so`.
 
 ## Theory of operation and key concepts
 
-Covered as per "Description" sections in the API documentation.
+**Purpose**: To provide stakeholders with a clear understanding of how the interfaced component(s) will function.
+
+**Key Questions to Address**:
+
+**Object Lifecycles**: How are objects within the component created, used, and destroyed? Are there unique identifiers for these objects?
+**Method Sequencing:** Is there a specific order in which the component's methods need to be called (e.g., must be initialized before being configured)?
+**State-Dependent Behavior:** Can certain methods only be used when the component is in a particular state? Does a state model govern the component's behavior?
+
+----- Findings to review and edit
+
+The `EthSWHAlSpec.md` document and the `ccsp_hal_ethsw.h` header file define the interface and functionality of the Ethernet Switch Hardware Abstraction Layer (HAL) within the RDK-B framework.
+
+**Key Findings**
+
+- **Object Lifecycles**: The HAL itself does not directly create or destroy objects. Instead, it focuses on manipulating the state and configuration of existing Ethernet switch hardware. The API uses parameters to identify specific ports, VLANs, or other entities on the switch. These identifiers (e.g., port numbers, VLAN IDs) are typically managed by the underlying switch hardware or driver.
+
+- **Method Sequencing**: While there isn't a strict initialization method enforced by the API, it's generally good practice to establish a basic configuration for the switch before performing more complex operations. For example, you might want to enable or disable specific ports before configuring VLANs or QoS rules. However, the exact sequence can depend on the specific use case and the capabilities of the underlying Ethernet switch.
+
+- **State-Dependent Behavior**: The Ethernet Switch HAL exhibits state-dependent behavior in several ways:
+
+   - **Port State**: Functions like halEthSwPortEnable and halEthSwPortDisable only make sense when the port exists. 
+     The success of these operations depends on the current state of the port.
+   - **VLAN Configuration**: Functions that modify VLAN settings assume that the VLAN already exists. The behavior of these functions might be undefined if called on a non-existent VLAN.
+   - **Other Configurations**: Similarly, functions for configuring QoS, ACLs, IGMP/MLD, and other features typically assume that the underlying resources (e.g., queues, rules) have been properly initialized.
+
+**Key Questions Addressed**
+
+  **Object Lifecycles**: The HAL primarily operates on existing objects on the Ethernet switch, identified by 
+  parameters like port numbers and VLAN IDs.
+  **Method Sequencing**: While there's no strict initialization required, a logical order of operations is often 
+  recommended for successful configuration.
+  **State-Dependent Behavior**: Many functions have implicit state dependencies, relying on the current state of the 
+  switch or the existence of specific resources.
 
 ## Sequence Diagram
 
