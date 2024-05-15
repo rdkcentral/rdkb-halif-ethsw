@@ -26,16 +26,16 @@
 #define __CCSP_HAL_ETHSW_H__
 
 /**
-* @defgroup ETHSW_HAL  Ethernet Switch HAL
-*
-* @defgroup ETHSW_HAL_TYPES  Ethernet Switch HAL Data Types
-* @ingroup  ETHSW_HAL
-*
-* @defgroup ETHSW_HAL_APIS Ethernet Switch HAL  APIs
-* @ingroup  ETHSW_HAL
-*
-**/
-
+ * @defgroup ETHSW_HAL Ethernet Switch HAL Interface
+ * @brief Provides an interface for interacting with Ethernet switch hardware.
+ *
+ * This component enables control and monitoring of Ethernet switch functionality, including port configuration, link status, and statistics.
+ *
+ * @{
+ * @defgroup ETHSW_HAL_TYPES Data Types
+ * @defgroup ETHSW_HAL_APIS APIs
+ * @}
+ */
 
 /**
  * @addtogroup ETHSW_HAL_TYPES
@@ -182,7 +182,8 @@ _CCSP_HAL_ETHSW_PORT
 }
 CCSP_HAL_ETHSW_PORT, *PCCSP_HAL_ETHSW_PORT;
 
- /* TODO: Evaluate if the pointer typedef (`_CCSP_HAL_ETHSW_PORT,*PCCSP_HAL_ETHSW_PORT`) are necessary. */
+/* TODO: Evaluate if the pointer typedef (`_CCSP_HAL_ETHSW_PORT,*PCCSP_HAL_ETHSW_PORT`) are necessary. */
+
 /**!< Lists possible link rates for an Ethernet switch. */
 typedef enum _CCSP_HAL_ETHSW_LINK_RATE {
     CCSP_HAL_ETHSW_LINK_NULL = 0,  /**!< No link. */
@@ -194,6 +195,7 @@ typedef enum _CCSP_HAL_ETHSW_LINK_RATE {
     CCSP_HAL_ETHSW_LINK_10Gbps,   /**!< 10 Gbps. */
     CCSP_HAL_ETHSW_LINK_Auto     /**!< Automatic negotiation. */
 } CCSP_HAL_ETHSW_LINK_RATE, *PCCSP_HAL_ETHSW_LINK_RATE;
+
 /* TODO: Evaluate if the pointer typedef (`_CCSP_HAL_ETHSW_LINK_RATE, *PCCSP_HAL_ETHSW_LINK_RATE`) are necessary. */
 
 /**! Lists possible duplex modes for an Ethernet switch. */
@@ -251,7 +253,7 @@ typedef struct _CCSP_HAL_ETH_STATS {
     ULONG BroadcastPacketsSent;   /**!< Number of broadcast packets sent. */
     ULONG BroadcastPacketsReceived; /**!< Number of broadcast packets received. */
     ULONG UnknownProtoPacketsReceived; /**!< Number of packets received with unknown protocols. */
-} CCSP_HAL_ETH_STATS;
+} CCSP_HAL_ETH_STATS,*PCCSP_HAL_ETH_STATS;
 
 /* 
 * TODO: Evaluate if the typedef  `_CCSP_HAL_ETH_STATS & *PCCSP_HAL_ETH_STATS` is necessary.
@@ -414,7 +416,6 @@ INT CcspHalEthSwSetAgingSpeed(CCSP_HAL_ETHSW_PORT PortId, INT AgingSpeed);
  */
 INT CcspHalEthSwLocatePortByMacAddress(unsigned char *mac, INT *port);
 
-//>>zqiu
 /** Ethernet HAL Callback for Client Association/Disassociation Notifications */
 
 /**
@@ -603,10 +604,10 @@ INT CcspHalEthSwGetEthPortStats(CCSP_HAL_ETHSW_PORT PortId, PCCSP_HAL_ETH_STATS 
 */
 
 /**! Callback function to be invoked when the Ethernet WAN link goes up. */
-typedef void (*fpEthWanLink_Up)(void); 
+typedef void (*fpEthWanLink_Up)(); 
 
 /**! Callback function to be invoked when the Ethernet WAN link goes down. */
-typedef void (*fpEthWanLink_Down)(void);
+typedef void (*fpEthWanLink_Down)();
 
 /**! Stores callback functions for Ethernet WAN link status changes. */
 typedef struct __appCallBack {
