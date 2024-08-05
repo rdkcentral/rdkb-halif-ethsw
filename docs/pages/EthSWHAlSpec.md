@@ -87,7 +87,7 @@ Vendors may implement internal threading and event mechanisms to meet their oper
 
 ## Process Model
 
-All API's are expected to be called from multiple process.
+All APIs are expected to be called from multiple processes. Due to this concurrent access, vendors must implement protection mechanisms within their API implementations to handle multiple processes calling the same API simultaneously. This is crucial to ensure data integrity, prevent race conditions, and maintain the overall stability and reliability of the system.
 
 ## Memory Model
 
