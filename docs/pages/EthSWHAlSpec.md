@@ -177,7 +177,7 @@ The implementation is expected to released under the Apache License 2.0.
 
 ## Build Requirements
 
-EthSW HAL source code should be able to be built under Linux Yocto environment and should be delivered as a shared library `libhal_ethsw.so`
+The source code should be capable of, but not be limited to, building under the Yocto distribution environment. The recipe should deliver a shared library named as `libhal_ethsw.so`
   
 ## Variability Management
 
@@ -205,7 +205,6 @@ All HAL function prototypes and datatype definitions are available in `ccsp_hal_
 
 The `EthSWHAlSpec.md` document and the `ccsp_hal_ethsw.h` header file define the interface and functionality of the Ethernet Switch Hardware Abstraction Layer (HAL) within the RDK-B framework.
 
-## Key Findings
 
 - **Object Lifecycles**: The HAL itself does not directly create or destroy objects. Instead, it focuses on manipulating the state and configuration of existing Ethernet switch hardware. The API uses parameters to identify specific ports, VLANs, or other entities on the switch. These identifiers (e.g., port numbers, VLAN IDs) are typically managed by the underlying switch hardware or driver.
 
@@ -218,14 +217,6 @@ The `EthSWHAlSpec.md` document and the `ccsp_hal_ethsw.h` header file define the
   - **VLAN Configuration**: Functions that modify VLAN settings assume that the VLAN already exists. The behavior of these functions might be undefined if called on a non-existent VLAN.
   - **Other Configurations**: Similarly, functions for configuring QoS, ACLs, IGMP/MLD, and other features typically assume that the underlying resources (e.g., queues, rules) have been properly initialized.
 
-## Key Questions Addressed
-
-- **Object Lifecycles**: The HAL primarily operates on existing objects on the Ethernet switch, identified by
-  parameters like port numbers and VLAN IDs.
-- **Method Sequencing**: While there's no strict initialization required, a logical order of operations is often
-  recommended for successful configuration.
-- **State-Dependent Behavior**: Many functions have implicit state dependencies, relying on the current state of the
-  switch or the existence of specific resources.
 
 ## Sequence Diagram
 
