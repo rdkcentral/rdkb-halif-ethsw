@@ -489,6 +489,10 @@ typedef INT (*CcspHalExtSw_ethAssociatedDevice_callback)(eth_device_t *eth_dev);
  */
 void CcspHalExtSw_ethAssociatedDevice_callback_register(CcspHalExtSw_ethAssociatedDevice_callback callback_proc);
 
+/*
+ *TODO: Ensure the upper layers have a consistent interface for all platforms and configurations. Functions on unsupported platforms should return a NOT_SUPPORTED enum. Remove build flags for features in the interface between layers, allowing the same binary upper layer to run against any vendor implementation without rebuilding.
+ */
+
 #ifdef FEATURE_RDKB_WAN_MANAGER
 #ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
 
