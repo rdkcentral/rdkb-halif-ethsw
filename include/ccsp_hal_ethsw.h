@@ -149,7 +149,7 @@
                 ENUMERATION DEFINITIONS
 **********************************************************************/
 
-/**<! Represents the available ports on an Ethernet switch. */```
+/**<! Represents the available ports on an Ethernet switch. */
  
 typedef enum
 _CCSP_HAL_ETHSW_PORT
