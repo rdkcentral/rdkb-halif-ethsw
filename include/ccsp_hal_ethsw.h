@@ -540,7 +540,7 @@ INT CcspHalExtSw_getEthWanEnable(BOOLEAN *pFlag);
  * @retval RETURN_ERR - On failure.
  */
 INT CcspHalExtSw_setEthWanEnable(BOOLEAN Flag);
-
+#ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
 /**!
  * @brief Retrieves the current hardware (HW) WAN configuration status.
  *
