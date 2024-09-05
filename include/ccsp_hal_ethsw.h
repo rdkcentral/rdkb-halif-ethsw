@@ -540,6 +540,9 @@ INT CcspHalExtSw_getEthWanEnable(BOOLEAN *pFlag);
  * @retval RETURN_ERR - On failure.
  */
 INT CcspHalExtSw_setEthWanEnable(BOOLEAN Flag);
+/*
+ *TODO: Remove the #ifdef switches. Interfaces should not have #ifdef switches in them, the interface is fixed for all platforms. Worse case scenario the interface should return not supported.
+ */
 #ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
 /**!
  * @brief Retrieves the current hardware (HW) WAN configuration status.
