@@ -127,7 +127,6 @@
 /* Default to Physical Port #1 for ETH WAN */
 #define ETHWAN_DEF_INTF_NUM 0
 #endif
-#endif
 
 #ifndef ETHWAN_INTERFACE_NAME_MAX_LENGTH 
 
@@ -149,7 +148,7 @@
                 ENUMERATION DEFINITIONS
 **********************************************************************/
 
-/**<! Represents the available ports on an Ethernet switch. */```
+/**<! Represents the available ports on an Ethernet switch. */
  
 typedef enum
 _CCSP_HAL_ETHSW_PORT
