@@ -119,6 +119,8 @@
   
 #if defined (ETH_6_PORTS)
 #define ETHWAN_DEF_INTF_NUM 5
+#elif defined (ETH_5_PORTS)
+#define ETHWAN_DEF_INTF_NUM 4
 #elif defined (ETH_4_PORTS)
 #define ETHWAN_DEF_INTF_NUM 3
 #elif defined (ETH_2_PORTS) && defined (MODEM_ONLY_SUPPORT)
