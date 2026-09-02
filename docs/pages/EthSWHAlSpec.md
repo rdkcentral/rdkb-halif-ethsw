@@ -54,8 +54,9 @@ convention across products, an implementation that can be replaced without chang
 a stable set of identifiers and return values, and behaviour that is specified rather than
 inferred from a particular switch.
 
-**Scope of this interface.** The contract is exactly the twenty functions listed under
-`API Surface`: initialisation, port status and configuration, forwarding-table maintenance,
+**Scope of this interface.** The contract is the functions listed under
+ `API Surface`: eighteen unconditional functions plus up to two feature-guarded optional functions
+ (see `Optional Components`). They cover initialisation, port status and configuration, forwarding-table maintenance,
 connected-device enumeration with its notification callback, Ethernet WAN selection,
 provisioning and link events, and per-port statistics. No function that creates, deletes or
 modifies a `VLAN`, that configures `QoS` or `DSCP` priority, an `ACL`, bridging, link
