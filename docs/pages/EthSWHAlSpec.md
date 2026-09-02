@@ -640,7 +640,7 @@ each notification.
 
 ```mermaid
 sequenceDiagram
-    participant Caller as CcspPandMSsp / CcspEthAgent
+    participant Caller as CcspEthAgent
     participant HAL as Ethernet Switch HAL
     participant Vendor as Vendor Software
     Caller->>HAL: CcspHalEthSwInit()
