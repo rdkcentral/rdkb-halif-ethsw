@@ -35,7 +35,7 @@ The diagram below describes a high-level software architecture of the Ethernet S
 
 ```mermaid
 flowchart TD
-    Owner["CcspPandMSsp / CcspEthAgent"] <--> Contract["Ethernet Switch HAL interface<br/>ccsp_hal_ethsw.h - contract requirement"]
+    Owner["CcspEthAgent"] <--> Contract["Ethernet Switch HAL interface<br/>ccsp_hal_ethsw.h - contract requirement"]
     Contract <--> Impl["Ethernet Switch HAL implementation<br/>libhal_ethsw.so - vendor supplied"]
     Impl <--> Drivers[Vendor switch drivers]
 ```
@@ -44,7 +44,7 @@ The Ethernet Switch Hardware Abstraction Layer, `ccsp_hal_ethsw`, is the interfa
 which the RDK-B stack reads and controls the Ethernet switch of a broadband gateway. It is the
 boundary between RDK-B middleware and a vendor's switch software: the header declares the
 contract, and a vendor supplies the implementation behind it. In an RDK-B deployment the
-services that own this interface are `CcspPandMSsp` and `CcspEthAgent`.
+services that own this interface is `CcspEthAgent`.
 
 The interface exists so that a caller can operate a switch without knowing which switch it is.
 A caller works in terms of port identifiers, link rates, duplex modes, administrative states
@@ -55,32 +55,9 @@ a stable set of identifiers and return values, and behaviour that is specified r
 inferred from a particular switch.
 
 **Scope of this interface.** The contract is the functions listed under
- `API Surface`: eighteen unconditional functions plus up to two feature-guarded optional functions
- (see `Optional Components`). They cover initialisation, port status and configuration, forwarding-table maintenance,
+ `API Surface` cover initialisation, port status and configuration, forwarding-table maintenance,
 connected-device enumeration with its notification callback, Ethernet WAN selection,
-provisioning and link events, and per-port statistics. No function that creates, deletes or
-modifies a `VLAN`, that configures `QoS` or `DSCP` priority, an `ACL`, bridging, link
-aggregation, or `IGMP` or `MLD` multicast control is declared by this header, so no such
-capability is part of this contract. A reader who arrives from a broader RDK-B HAL inventory
-should note that the header governs where the two disagree: `eth_vlanid` in `eth_device_t` is a
-reported attribute of an observed device rather than a VLAN-management entry point, and
-`MulticastPacketsSent` and `MulticastPacketsReceived` in `CCSP_HAL_ETH_STATS` are counters
-rather than multicast control.
-
-## Optional Components
-
-Two functions of this interface are compiled conditionally, so they are present in some
-products and absent from others. Both are named in `API Surface` with their guard.
-
-- `CcspHalExtSw_ethPortConfigure()` is declared only when **both** `FEATURE_RDKB_WAN_MANAGER`
-  and `FEATURE_RDKB_AUTO_PORT_SWITCH` are defined.
-- `CcspHalExtSw_getCurrentWanHWConf()` is declared only when `FEATURE_RDKB_AUTO_PORT_SWITCH` is
-  defined.
-
-Calling code must be guarded by the same macros as the declaration it calls. This interface
-provides no runtime way to discover whether either function is present and defines no "not
-supported" return value, so an unguarded call is a build failure rather than an error a caller
-can handle. Everything else in `API Surface` is unconditional.
+provisioning and link events, and per-port statistics.
 
 ## Component Runtime Execution Requirements
 
@@ -373,12 +350,10 @@ The product can be configured via the following compile time defines:
 FEATURE_RDKB_WAN_MANAGER        # Enable the WAN Manager
 FEATURE_RDKB_AUTO_PORT_SWITCH   # Enable the RDKB Auto Port Switch
 ```
-
-These two macros change the interface itself rather than only the implementation behind it, as
-recorded under `Optional Components`: `CcspHalExtSw_ethPortConfigure()` is declared only when
-both are defined, and `CcspHalExtSw_getCurrentWanHWConf()` only when
-`FEATURE_RDKB_AUTO_PORT_SWITCH` is defined. A product that defines neither has an interface of
-eighteen functions rather than twenty.
+Its important to note that **FEATURE_RDKB_WAN_MANAGER** macro is defined in all products
+by default.
+ `CcspHalExtSw_ethPortConfigure()` and `CcspHalExtSw_getCurrentWanHWConf()` are declared
+ only when `FEATURE_RDKB_AUTO_PORT_SWITCH` is defined.
 
 A second compile-time customization selects the default Ethernet WAN interface index. The
 header sets `ETHWAN_DEF_INTF_NUM` from the first matching hardware-configuration macro:
@@ -607,7 +582,7 @@ interface and nothing outside it.
 
 | Function | Purpose |
 | --- | --- |
-| `CcspHalExtSw_ethPortConfigure` | Puts one named Ethernet interface into or out of WAN mode. **Declared only when both `FEATURE_RDKB_WAN_MANAGER` and `FEATURE_RDKB_AUTO_PORT_SWITCH` are defined.** |
+| `CcspHalExtSw_ethPortConfigure` | Puts one named Ethernet interface into or out of WAN mode. **Declared only when`FEATURE_RDKB_AUTO_PORT_SWITCH` is defined.** |
 | `CcspHalExtSw_getEthWanEnable` | Reads whether the Ethernet WAN feature is enabled. |
 | `CcspHalExtSw_setEthWanEnable` | Enables or disables the Ethernet WAN feature on the currently selected port. |
 | `CcspHalExtSw_getCurrentWanHWConf` | Reports whether the hardware is wired for WAN or for LAN use. Returns `BOOLEAN` and has no error channel. **Declared only when `FEATURE_RDKB_AUTO_PORT_SWITCH` is defined.** |
@@ -640,7 +615,7 @@ each notification.
 
 ```mermaid
 sequenceDiagram
-    participant Caller as CcspPandMSsp / CcspEthAgent
+    participant Caller as CcspEthAgent
     participant HAL as Ethernet Switch HAL
     participant Vendor as Vendor Software
     Caller->>HAL: CcspHalEthSwInit()
