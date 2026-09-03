@@ -350,10 +350,10 @@ The product can be configured via the following compile time defines:
 FEATURE_RDKB_WAN_MANAGER        # Enable the WAN Manager
 FEATURE_RDKB_AUTO_PORT_SWITCH   # Enable the RDKB Auto Port Switch
 ```
-Its important to note that **FEATURE_RDKB_WAN_MANAGER** macro is defined in all products
-by default.
- `CcspHalExtSw_ethPortConfigure()` and `CcspHalExtSw_getCurrentWanHWConf()` are declared
- only when `FEATURE_RDKB_AUTO_PORT_SWITCH` is defined.
+It's important to note that `CcspHalExtSw_ethPortConfigure()` is declared only when both
+`FEATURE_RDKB_WAN_MANAGER` and `FEATURE_RDKB_AUTO_PORT_SWITCH` are defined.
+`CcspHalExtSw_getCurrentWanHWConf()` is declared only when
+`FEATURE_RDKB_AUTO_PORT_SWITCH` is defined.
 
 A second compile-time customization selects the default Ethernet WAN interface index. The
 header sets `ETHWAN_DEF_INTF_NUM` from the first matching hardware-configuration macro:
