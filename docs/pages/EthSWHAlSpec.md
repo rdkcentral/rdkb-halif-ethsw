@@ -238,8 +238,8 @@ handle each on its own terms:
 - `GWP_GetEthWanLinkStatus()` returns `1` for a link that is up, `0` for a link that is down,
   and a negative value when the state could not be determined. A caller tests for a negative
   value first and must not treat it as "down", because a failed query and a down link are
-  different facts. The interface does not define which negative value is used and does not
-  state that any global error indicator is set.
+  different facts. On error the header states that `errno` should be checked for details; the
+  specific negative value is not defined by this interface.
 - `CcspHalExtSw_getCurrentWanHWConf()` returns `BOOLEAN`, `TRUE` when a hardware WAN
   configuration is enabled and `FALSE` when a LAN configuration is enabled. The interface does not provide an error reporting channel.  Consequently, a query failure cannot be distinguished from a successful query returning FALSE, and no alternative mechanism is provided to determine whether the operation completed successfully.
 - `CcspHalExtSw_ethAssociatedDevice_callback_register()` and `GWP_RegisterEthWan_Callback()`
