@@ -170,28 +170,6 @@ deliver events that a caller would otherwise have to discover by polling.
   `fpEthWanLink_Down` in `pGWP_act_EthWanLinkDown`. This replaces polling
   `GWP_GetEthWanLinkStatus()`.
 
-Four constraints apply to both paths, and each of them is a limit of the contract rather than a
-recommendation:
-
-- **The execution context is not specified.** This interface does not state the thread or
-  process a callback runs on, whether deliveries are serialised, or whether calling back into
-  this HAL from inside a callback is permitted. A caller must therefore protect its own state,
-  must not assume the callback runs on the registering thread, and should return promptly and
-  defer real work rather than block the implementation.
-- **The lifetime of the data passed to a callback is not specified.** This interface states
-  neither who owns the `eth_device_t` a `CcspHalExtSw_ethAssociatedDevice_callback` receives nor
-  how long the pointer stays valid, so a callback must treat both as unknown: copy any field it
-  needs to keep rather than storing the pointer, release nothing, and not rely on the structure
-  remaining readable after the callback returns.
-- **Registration reports nothing.** Both registration functions return `void`, so a caller
-  cannot tell from the call whether registration succeeded; confirmation is available only
-  indirectly, by observing that notifications arrive.
-- **Registration is not reversible and not repeatable.** This interface defines no way to
-  remove a registration and does not state whether a second call replaces the first or adds to
-  it, so a caller registers once. It also does not state whether a NULL callback or a partially
-  populated `appCallBack` is a valid way to decline an event, so a caller supplies every
-  function it registers.
-
 The Ethernet WAN link callbacks take no argument and return nothing, so the notification
 carries no detail beyond the fact of the event. A caller that needs the port, the interface
 name or the current link state queries `CcspHalExtSw_getEthWanPort()`,
