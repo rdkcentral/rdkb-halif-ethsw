@@ -538,7 +538,7 @@ name is defined.
 | `FALSE` | 0. The false value to use for a `BOOLEAN` argument or output. |
 | `UP` / `DOWN` | The strings `"up"` and `"down"` an implementation reports for an interface state; compare against these rather than against a locally spelled literal. |
 | `ETHWAN_DEF_INTF_NUM` | The compile-time default Ethernet WAN interface index, 0-based, selected by the ladder in `Platform or Product Customization`. |
-| `ETHWAN_INTERFACE_NAME_MAX_LENGTH` | 32. The only interface-name length bound this header declares; read the consistency warning in `Platform or Product Customization` before sizing a buffer. |
+| `ETHWAN_INTERFACE_NAME_MAX_LENGTH` | 32. Header macro for interface-name length; note that `GWP_GetEthWanInterfaceName()` currently documents a minimum 64-byte buffer, so size buffers to the stricter requirement. |
 
 The header also defines the guarded type aliases `ULONG`, `ULLONG`, `CHAR`, `UCHAR`, `BOOLEAN`,
 `INT` and `UINT` so that it can be included where no RDK-B platform type header is available.
