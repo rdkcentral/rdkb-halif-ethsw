@@ -44,7 +44,7 @@ The Ethernet Switch Hardware Abstraction Layer, `ccsp_hal_ethsw`, is the interfa
 which the RDK-B stack reads and controls the Ethernet switch of a broadband gateway. It is the
 boundary between RDK-B middleware and a vendor's switch software: the header declares the
 contract, and a vendor supplies the implementation behind it. In an RDK-B deployment the
-services that own this interface is `CcspEthAgent`.
+service that owns this interface is `CcspEthAgent`.
 
 The interface exists so that a caller can operate a switch without knowing which switch it is.
 A caller works in terms of port identifiers, link rates, duplex modes, administrative states
