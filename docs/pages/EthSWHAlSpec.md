@@ -582,7 +582,7 @@ interface and nothing outside it.
 
 | Function | Purpose |
 | --- | --- |
-| `CcspHalExtSw_ethPortConfigure` | Puts one named Ethernet interface into or out of WAN mode. **Declared only when`FEATURE_RDKB_AUTO_PORT_SWITCH` and FEATURE_RDKB_WAN_MANAGER is defined.** |
+| `CcspHalExtSw_ethPortConfigure` | Puts one named Ethernet interface into or out of WAN mode. **Declared only when `FEATURE_RDKB_AUTO_PORT_SWITCH` and `FEATURE_RDKB_WAN_MANAGER` are defined.** |
 | `CcspHalExtSw_getEthWanEnable` | Reads whether the Ethernet WAN feature is enabled. |
 | `CcspHalExtSw_setEthWanEnable` | Enables or disables the Ethernet WAN feature on the currently selected port. |
 | `CcspHalExtSw_getCurrentWanHWConf` | Reports whether the hardware is wired for WAN or for LAN use. Returns `BOOLEAN` and has no error channel. **Declared only when `FEATURE_RDKB_AUTO_PORT_SWITCH` is defined.** |
