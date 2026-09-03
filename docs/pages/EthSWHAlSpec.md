@@ -401,7 +401,7 @@ derive one from `CCSP_HAL_ETHSW_PORT`. Two further port values belong to neither
 and is not a `CCSP_HAL_ETHSW_PORT` enumerator. The port number
 `CcspHalEthSwLocatePortByMacAddress()` writes is header-defined: `0` denotes the MoCA port and
 `1-4` denote Ethernet ports.
-interface defines no conversion between any of these schemes**, so a caller must not pass an
+This interface defines no conversion between any of these schemes, so a caller must not pass an
 index from one to a function that expects another, and must establish the meaning of a located
 port number or a reported `eth_port` with the vendor implementation before acting on it.
 
@@ -547,7 +547,7 @@ caller treats them as spellings of the underlying C types rather than as distinc
 
 ### API Surface
 
-Eighteen functions are always declared, and up to two additional functions are declared only when their feature macros are enabled (see `Optional Components`). All declarations live in
+Eighteen functions are always declared, and up to two additional functions are declared only when their feature macros are enabled (see `Platform or Product Customization`). All declarations live in
 [ccsp_hal_ethsw.h](../../include/ccsp_hal_ethsw.h), which carries the full per-function
 contract for each: argument ranges, pre-conditions, post-conditions, every return value with
 the reason it occurs, and the caller's recovery action. The groups below cover the entire
