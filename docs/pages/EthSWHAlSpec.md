@@ -547,7 +547,7 @@ caller treats them as spellings of the underlying C types rather than as distinc
 
 ### API Surface
 
-Twenty functions are declared, all in
+Eighteen functions are always declared, and up to two additional functions are declared only when their feature macros are enabled (see `Optional Components`). All declarations live in
 [ccsp_hal_ethsw.h](../../include/ccsp_hal_ethsw.h), which carries the full per-function
 contract for each: argument ranges, pre-conditions, post-conditions, every return value with
 the reason it occurs, and the caller's recovery action. The groups below cover the entire
