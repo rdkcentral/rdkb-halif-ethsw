@@ -54,10 +54,10 @@ convention across products, an implementation that can be replaced without chang
 a stable set of identifiers and return values, and behaviour that is specified rather than
 inferred from a particular switch.
 
-**Scope of this interface.** The contract is the functions listed under
- `API Surface` cover initialisation, port status and configuration, forwarding-table maintenance,
-connected-device enumeration with its notification callback, Ethernet WAN selection,
-provisioning and link events, and per-port statistics.
+**Scope of this interface.** The contract is the functions listed under `API Surface`, which cover
+initialisation, port status and configuration, forwarding-table maintenance, connected-device
+enumeration with its notification callback, Ethernet WAN selection, provisioning and link events,
+and per-port statistics.
 
 ## Component Runtime Execution Requirements
 
