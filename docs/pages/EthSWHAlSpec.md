@@ -397,10 +397,10 @@ carry, and the value in `ETHWAN_DEF_INTF_NUM`, are a 0-based index instead, and 
 does not define that index's upper bound: no symbol here states how many external Ethernet
 ports a product has, so a caller must obtain the port count from the platform rather than
 derive one from `CCSP_HAL_ETHSW_PORT`. Two further port values belong to neither scheme. The
-`eth_port` member of `eth_device_t` is stated not to be a `CCSP_HAL_ETHSW_PORT` enumerator, and
-this interface defines neither its numbering base nor its upper bound. The port number
-`CcspHalEthSwLocatePortByMacAddress()` writes is likewise undefined in numbering, and this
-interface does not say which value denotes a MoCA rather than an Ethernet port. **This
+`eth_port` member of `eth_device_t` is a 0-based external Ethernet port index (0 to MaxEthPort-1)
+and is not a `CCSP_HAL_ETHSW_PORT` enumerator. The port number
+`CcspHalEthSwLocatePortByMacAddress()` writes is header-defined: `0` denotes the MoCA port and
+`1-4` denote Ethernet ports.
 interface defines no conversion between any of these schemes**, so a caller must not pass an
 index from one to a function that expects another, and must establish the meaning of a located
 port number or a reported `eth_port` with the vendor implementation before acting on it.
@@ -488,7 +488,7 @@ reports the feature setting, `GWP_GetEthWanLinkStatus()` reports the live link, 
 - **Build-dependent presence**: `CcspHalExtSw_ethPortConfigure()` and
   `CcspHalExtSw_getCurrentWanHWConf()` do not exist in a build that does not define their
   feature macros, which is a compile-time condition rather than a runtime state. See
-  `Optional Components`.
+  `Platform or Product Customization`.
 
 ### Data Structures and Defines
 
