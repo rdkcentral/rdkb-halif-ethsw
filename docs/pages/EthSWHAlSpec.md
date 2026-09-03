@@ -87,13 +87,13 @@ documented blocking behaviour into account.
 
 ### Threading Model
 
-Ethernet Switch HAL is not thread safe, any module which is invoking the Ethernet Switch HAL api should ensure
-calls are made in a thread safe manner. This applies to every function in `API Surface`,
+Ethernet Switch HAL is not thread-safe, any module which is invoking the Ethernet Switch HAL API should ensure
+calls are made in a thread-safe manner. This applies to every function in `API Surface`,
 including the two registration functions: a caller must not register a callback on one thread
 while another thread is calling this interface.
 
 Vendors may implement internal threading and event mechanisms to meet their operational
-requirements. These mechanisms must be designed to ensure thread safety when interacting with
+requirements. These mechanisms must be designed to ensure thread-safety when interacting with
 HAL interface. Proper cleanup of allocated resources (e.g., memory, file handles, threads) is
 mandatory when the vendor software terminates or closes its connection to the HAL.
 
